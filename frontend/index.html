@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SmartCookie.App</title>
+  </head>
+  <body>
+    <div class="main">
+      <video id="video" controls="false" autoplay style="width: 600px">
+        <source src="./assets/vid.mp4" type="video/mp4" />
+      </video>
+
+      <section id="question" style="display: none">
+        <p class="que">3 + 2 = ?</p>
+        <input type="radio" id="op1" name="options" />
+        <label for="virus">5</label>
+        <br />
+        <input type="radio" id="op2" name="options" />
+        <label for="virus">8</label>
+        <br />
+        <input type="radio" id="op3" name="options" />
+        <label for="virus">3</label>
+        <br />
+        <input type="radio" id="op4" name="options" />
+        <label for="virus">4</label>
+        <br />
+
+        <div style="color: red" id="warning"></div>
+        <br />
+        <button id="submit" onclick="submit()">submit</button>
+      </section>
+    </div>
+
+    <script>
+      var video = document.getElementById("video");
+      var warningText = document.getElementById("warning");
+      var question = document.getElementById("question");
+      var pauseTime;
+      var currentTime;
+
+      function getTime(time) {
+        return (
+          Math.floor(time / 60) + ":" + ("0" + Math.floor(time % 60)).slice(-2)
+        );
+      }
+
+      myVar = setInterval(function () {
+        currentTime = Math.floor(video.currentTime);
+        pauseTime = getTime(currentTime).toString();
+        if (pauseTime == "1:04") {
+          question.style.display = "block";
+          video.pause();
+          clearTimeout(myVar);
+          video.controls = false;
+        }
+      }, 1000);
+
+      function submit() {
+        if (document.getElementById("op1").checked) {
+          video.currentTime = currentTime;
+          video.play();
+          video.controls = true;
+          question.style.display = "none";
+        } else if (
+          document.getElementById("op2").checked ||
+          document.getElementById("op3").checked ||
+          document.getElementById("op4").checked
+        ) {
+          warningText.style.display = "block";
+          warningText.innerHTML = "Wrong Answer";
+          setTimeout(() => {
+            warningText.style.display = "none";
+          }, 1000);
+        }
+      }
+    </script>
+  </body>
+</html>
